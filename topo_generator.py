@@ -1,4 +1,5 @@
 import sys, os
+import math
 
 def helper():
 	print("Usage: python "+sys.argv[0]+" [Diameter(integer)] [Range(float)]\n\n")
@@ -75,6 +76,102 @@ print_grid(nodes_grid)
 
 # vertical/horizontal neighboring distance is 1
 n_distance = 1
+
+def calculate_distance(node1, node2):
+	# node1, node2 are tuples (i, j) with coordinates in the grid
+	if node1 == None or node2 == None
+		return -1
+	distance = math.sqrt((node1[0] - node2[0])**2 + (node[1] - node[2])**2)
+	return round(distance, 2)
+
+
+
+
+# direction vectors
+dRow = [-1, 0, 1, 0]
+dCol = [-1, 0, 1, 0]
+
+
+
+# use dfs to find all neighbors for each node, according to the specified range.
+def dfs(ground_node, current_node_connections, current_node, visited, current_range=0.0):
+	
+	(i, j) = current_node
+
+	if i >= 0 and i < len(grid) and j >= 0 and  j < len(grid[0]) and not visited[i][j] and ground_node != current_node:
+		
+		visited[i][j] = True
+
+		# base statement
+		if current_range >= RANGE:
+			return True
+
+		current_range = calculate_distance(ground_node, current_node)
+
+		# Recurse for all directions
+		for h in range(8):
+			adjx = 
+
+
+		#top-left
+		top_left_node = (current_node[0] - 1, current_node[1] - 1)
+		dfs(current_node_connections, top_left_node, visited, current_range)
+
+		#top
+		top_node = (current_node[0] - 1, current_node[1])
+		dfs(current_node_connections, top_node, visited, current_range)
+
+		#top-right
+		top_right_node = (current_node[0] - 1, current_node[1] + 1)
+		dfs(current_node_connections, top_right_node, visited, current_range)
+
+		#right
+		right_node = (current_node[0], current_node[1] + 1)
+		dfs(current_node_connections, right_node, visited, current_range)
+
+		#down-right
+		down_right_node = (current_node[0] + 1, current_node[1] + 1)
+		dfs(current_node_connections, down_right_node, visited, current_range)
+
+		#down
+		down_node = (current_node[0] + 1, current_node[1])
+		dfs(current_node_connections, down_node, visited, current_range)
+
+		#down-left
+		down_left_node = (current_node[0] + 1, current_node[1] - 1)
+		dfs(current_node_connections, down_left_node, visited, current_range)
+
+		#left
+		left_node = (current_node[0], current_node[1] - 1)
+		dfs(current_node_connections, left_node, visited, current_range)
+
+		return True
+	return False
+
+
+def find_connections(grid, distance, range):
+
+	# Guard statements
+	if grid is None or grid == []:
+		return
+	if distance <= 0:
+		return
+
+	connections = list()
+
+	for i in range(len(grid)):
+		for j in range(len(grid[0])):
+
+			current_node = (i, j)
+
+			visited = [[False for k in range(len(table[0]))] for m in range(len(table))]
+
+			current_node_connections = list()
+
+			dfs(ground_node=current_node, current_node_connections=current_node_connections, current_node=current_node, visited=visited, current_range=0)
+
+			connections.append(current_node_connections)
+
 
 # this list will hold all neighboring nodes of each node
 neighbors = [[None] for node in range(DIAMETER*DIAMETER)]
