@@ -1,8 +1,8 @@
 import sys, os
-import math
+import math, copy
 
 def helper():
-	print("Usage: python "+sys.argv[0]+" [Diameter(integer)] [Range(float)]\n\n")
+	print("Usage: python "+sys.argv[0]+" [Diameter(integer)] [Range(float)] [topology_file name(string)]\n\n")
 
 def print_grid(grid):
 	if grid == [] or grid is None:
@@ -23,21 +23,22 @@ def print_grid(grid):
 
 
 
-DIAMETER = 5
+DIAMETER = 2
 RANGE = 1.0
 D_LIMIT = 100
 R_LIMIT = 20
 # Verify amount of arguments.
-if len(sys.argv) != 3:
+if len(sys.argv) != 4:
 	print("\nInvalid amount of arguments. Try again.")
 	helper()
 	sys.exit(1)
 
 
-# Verify DIAMETER and RANGE inputs. 
+# # Verify DIAMETER and RANGE inputs. 
 try:
 	DIAMETER = int(sys.argv[1])
 	RANGE = float(sys.argv[2])
+	FILENAME = sys.argv[3]
 
 	# Diameter, Lets limit at 50
 	if DIAMETER >= D_LIMIT:
@@ -146,7 +147,7 @@ def dfs(grid, ground_node, current_node_connections, current_node, visited, sran
 	return 
 
 
-def find_connections(grid, srange=RANGE, diameter=DIAMETER):
+def find_connections_rec(grid, srange=RANGE, diameter=DIAMETER):
 
 	# Guard statements
 	if grid is None or grid == []:
@@ -171,20 +172,77 @@ def find_connections(grid, srange=RANGE, diameter=DIAMETER):
 	return connections
 
 
-connections = find_connections(nodes_grid, RANGE, DIAMETER)
+connections = find_connections_rec(nodes_grid, RANGE, DIAMETER)
 print(connections)
 
 
 
 # Must "sort" the connections
 def sort_connections(connections):
+
+	c_connections = copy.deepcopy(connections)
 	
-	for cons in connections:
-		for node in cons:
-			pass
+	for cons in c_connections:
+		for n_index, node in enumerate(cons):
+			ground_index = node[0]
+			index = node[1]
+			if index < ground_index:
+				continue
+
+			for i, n in enumerate(c_connections[index]):
+
+				if n[1] == ground_index:
+					matched_node = c_connections[index].pop(i)
+					c_connections[ground_index].insert(n_index + 1, matched_node)
+					break
+				
+	return c_connections
+			
 
 sorted_connections = sort_connections(connections=connections)
 
-print(sort_connections)
+print(sorted_connections)
+
+def write_file(file_name, connections):
+    print("Creating a topology file...")
+    with open(file_name, "w") as file:
+        for conn in connections:
+            for node in conn:
+                if conn is not None or conn != []:
+                    file.write(str(node[0])+" "+str(node[1])+" -50.0\n")
+            file.write("\n")
+
+    	
 
 
+write_file(FILENAME, sorted_connections)
+
+
+# visited = [[False for k in DIAMETER] for l in DIAMETER]
+
+# def find_connections_v2(grid, diameter, srange):
+#     conn = list()
+#     for i in range(diameter):
+#         for j in range(diameter):
+            
+#             # current node is (i, j)
+#             current_node = (i, j)
+#             for m in diameter:
+#                 if m - i > 0 and m - i > srange and not visited[i][m]:
+#                     conn.append((grid[i][j], grid[i][m]))
+#                     conn.append((grid[i][m], grid[i][j]))
+
+#                 if m - j > 0 and m - j > srange:
+#                     conn.append((grid[i][j], grid[m][j]))
+#                 	conn.append((grid[i][m]), grid[i][j])
+
+#                 if 
+                
+                    
+
+
+			
+            
+
+
+print("\n\n")
