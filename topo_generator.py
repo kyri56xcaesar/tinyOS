@@ -2,22 +2,22 @@ import sys, os
 import math, copy
 
 def helper():
-	print("Usage: python "+sys.argv[0]+" [Diameter(integer)] [Range(float)] [topology_file name(string)]\n\n")
+	print "Usage: python "+sys.argv[0]+" [Diameter(integer)] [Range(float)] [topology_file name(string)]\n\n"
 
 def print_grid(grid):
 	if grid == [] or grid is None:
 		return
 
 	for i in range(len(grid)):
-		print("( ", end="")
+		print "( ",
 		for j in range(len(grid[0])):
 			if j != len(grid[0]) - 1:
-				print(str(grid[i][j])+"\t", end="")
+				print str(grid[i][j])+"\t", 
 			else:
 				if grid[i][j] < 10:
-					print(str(grid[i][j]) + ' ', end="")
+					print str(grid[i][j]) + ' ',
 				else:
-					print(str(grid[i][j]), end="")
+					print str(grid[i][j]), 
 
 		print(")\n")
 
@@ -29,7 +29,7 @@ D_LIMIT = 100
 R_LIMIT = 20
 # Verify amount of arguments.
 if len(sys.argv) != 4:
-	print("\nInvalid amount of arguments. Try again.")
+	print "\nInvalid amount of arguments. Try again."
 	helper()
 	sys.exit(1)
 
@@ -41,15 +41,15 @@ try:
 	FILENAME = sys.argv[3]
 
 	# Diameter, Lets limit at 50
-	if DIAMETER >= D_LIMIT:
-		print("Diamater value too high")
+	if DIAMETER > D_LIMIT:
+		print "Diamater value too high"
 		sys.exit(1)
 	elif RANGE >= R_LIMIT:
-		print("Range value too high")
+		print "Range value too high"
 		sys.exit(1)
 
 except ValueError:
-	print("\nInvalid value for arguments. Try again.")
+	print "\nInvalid value for arguments. Try again." 
 	helper()
 	sys.exit(2)
 
@@ -204,7 +204,7 @@ sorted_connections = sort_connections(connections=connections)
 print(sorted_connections)
 
 def write_file(file_name, connections):
-    print("Creating a topology file...")
+    print "Creating a topology file..." 
     with open(file_name, "w") as file:
         for conn in connections:
             for node in conn:
