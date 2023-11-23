@@ -55,16 +55,16 @@ if len(sys.argv) != 1:
 	if len(sys.argv) == 3:
 
 		try:
-			nodes = int(sys.argv[2])
+			no_nodes = int(sys.argv[2])
 		except:
 			print "Invalid node value. Try again."
 			helper()
 			sys.exit(1)
-		if nodes > MAX_NODES:
+		if no_nodes > MAX_NODES:
 			print "Invalid node number. Try again."
 			helper()
 			sys.exit(1)
-		NO_NODES = nodes
+		NO_NODES = no_nodes
 		nodes_given = True
 
 
@@ -76,16 +76,16 @@ if topo is None:
 	print "Topology file not opened!!! \n"
 
 # Read lines from up here
-lines = topo.readlines()
+topo_lines = topo.readlines()
 
 # calculate no_nodes from topo file
 # NO_NODES
 if not nodes_given:
 	nodes = set()
-	for line in lines:
+	for line in topo_lines:
 		if line !="\n":
 			line_contents = line.split()
-			print line_contents
+			#print line_contents
 			nodes.add(int(line_contents[0]))
 			nodes.add(int(line_contents[1]))
 
@@ -98,7 +98,6 @@ if not nodes_given:
 
 
 
-sys.exit(1)
 
 
 # @TODO configure how many nodes we have.
@@ -110,7 +109,7 @@ for i in range(0, NO_NODES):
 	
 r=t.radio()
 # read lines
-for line in lines:
+for line in topo_lines:
   s = line.split()
   if (len(s) > 0):
     print " ", s[0], " ", s[1], " ", s[2];
@@ -148,10 +147,15 @@ while(h):
 	if(h<=0):
 		ok=False
 
-# print "Node 0 connected with node 1" , r.connected(0,1) , r.connected(1,0)
-# print "Node 0 connected with node 2" , r.connected(0,2) , r.connected(2,0)
-# print "Node 1 connected with node 7" , r.connected(1,7) , r.connected(7,1)
-# print "Node 2 connected with node 3" , r.connected(2,3) , r.connected(3,2)
-# print "Node 4 connected with node 8" , r.connected(4,8) , r.connected(8,4)
+
+
+# print connections
+for line in topo_lines:
+		if line != "\n":
+			line_contents = line.split()
+			node1 = line_contents[0]
+			node2 = line_contents[1]
+			print "Node " + node1 + " connected with node " + node2 + "", r.connected(int(node1), int(node2))
+
 
 
