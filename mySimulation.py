@@ -8,16 +8,16 @@ t=Tossim([])
 f=sys.stdout #open('./logfile.txt','w')
 SIM_END_TIME= 1000 * t.ticksPerSecond()
 
+
 print "TicksPerSecond : ", t.ticksPerSecond(),"\n"
+print "Simulation Time: ", SIM_END_TIME, "\n"
 
 t.addChannel("Boot",f)
 t.addChannel("RoutingMsg",f)
-t.addChannel("NotifyParentMsg",f)
 t.addChannel("Radio",f)
-#t.addChannel("Serial",f)
 t.addChannel("SRTreeC",f)
-#t.addChannel("PacketQueueC",f)
-
+t.addChannel("PacketQueueC",f)
+t.addChannel("Data",f)
 
 
 # Handle topology files
@@ -99,8 +99,6 @@ if not nodes_given:
 
 
 
-
-# @TODO configure how many nodes we have.
 for i in range(0, NO_NODES):
 	m=t.getNode(i)
 	m.bootAtTime(10*t.ticksPerSecond() + i)

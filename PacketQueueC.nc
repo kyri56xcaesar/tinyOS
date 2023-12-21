@@ -30,14 +30,14 @@ implementation
 	{
 		bool em;
 		atomic{
-		if (size==queueSize)
-		{
-			em=TRUE;
-		}
-		else
-		{
-			em=FALSE;
-		}
+			if (size == queueSize)
+			{
+				em = TRUE;
+			}
+			else
+			{
+				em = FALSE;
+			}
 		}
 		return em ;
 	}
@@ -56,7 +56,7 @@ implementation
 		uint8_t ms;
 		
 		atomic{
-			ms= queueSize;
+			ms = queueSize;
 		}
 		return ms;
 	}
@@ -73,38 +73,32 @@ implementation
 	
 	command error_t PacketQueue.enqueue(message_t newPkt)
 	{
-		bool wasEmpty=FALSE, isFull=FALSE;
+		bool wasEmpty = FALSE, isFull = FALSE;
 		
 		atomic{
-		wasEmpty= (size==0);//call PacketQueue.empty();
-		isFull=(size==queueSize);
+			wasEmpty = (size == 0);//call PacketQueue.empty();
+			isFull = (size == queueSize);
 		}
 		
 		if (isFull)
 		{
-			dbg("PacketQueueC","enqueue(): Queue is FULL!!!\n");
-#ifdef PRINTFDBG_MODE
-			printf("PacketQueueC:enqueue(): Queue is FULL!!!\n");
-			printfflush();
-#endif
+			//dbg("PacketQueueC","enqueue(): Queue is FULL!!!\n");
+
 			return FAIL;
 		}
 				
 		atomic{
-			if(!wasEmpty)
+			if (!wasEmpty)
 			{
-				tailIndex = (tailIndex+1)%queueSize;
+				tailIndex = (tailIndex + 1) % queueSize;
 			}
 			
-			memcpy(&Q[tailIndex],&newPkt,sizeof(message_t));//???  
+			memcpy(&Q[tailIndex], &newPkt, sizeof(message_t));//???  
 			//Q[tailIndex]=*(message_t*)newPkt;
 			size++;
 		}
-		dbg("PacketQueueC","enqueue(): Enqueued in pos= %u \n",tailIndex);
-#ifdef PRINTFDBG_MODE
-		printf("PacketQueueC : enqueue() : pos=%u \n", tailIndex);
-		printfflush();
-#endif
+		//dbg("PacketQueueC","enqueue(): Enqueued in pos= %u \n",tailIndex);
+
 		return SUCCESS;
 	}
 	
@@ -118,11 +112,8 @@ implementation
 		}
 		if (isEmpty)
 		{
-			dbg("PacketQueueC","dequeue(): Q is emtpy!!!!\n");
-#ifdef PRINTFDBG_MODE
-			printf("PacketQueueC : dequeue() : Q is empty!!! \n");
-			printfflush();
-#endif
+			//dbg("PacketQueueC","dequeue(): Q is emtpy!!!!\n");
+
 			atomic{
 				m=Q[headIndex];
 			}
@@ -139,11 +130,8 @@ implementation
 			size--;
 			m=Q[tmp];
 		}
-		dbg("PacketQueueC","dequeue(): Dequeued from pos = %u \n",tmp);//(queueSize+headIndex-1)%queueSize);
-#ifdef PRINTFDBG_MODE
-		printf("PacketQueueC : dequeue(): pos = %u \n", tmp);
-		printfflush();
-#endif
+		//dbg("PacketQueueC","dequeue(): Dequeued from pos = %u \n",tmp);//(queueSize+headIndex-1)%queueSize);
+
 		return m;
 	}
 	

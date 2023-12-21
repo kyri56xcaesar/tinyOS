@@ -75,8 +75,7 @@ print_grid(nodes_grid)
 # Need to calculate neighbors, Pehraps use a search algorithm?
 # Duplicates would arise.
 
-# vertical/horizontal neighboring distance is 1
-n_distance = 1
+
 
 def calculate_distance(node1, node2):
 	# node1, node2 are tuples (i, j) with coordinates in the grid
@@ -87,10 +86,6 @@ def calculate_distance(node1, node2):
 
 
 
-
-# direction vectors
-dRow = [-1, 0, 1, 0]
-dCol = [-1, 0, 1, 0]
 
 # use dfs to find all neighbors for each node, according to the specified range.
 def dfs(grid, ground_node, current_node_connections, current_node, visited, srange=RANGE, length=DIAMETER):
@@ -204,13 +199,15 @@ sorted_connections = sort_connections(connections=connections)
 print(sorted_connections)
 
 def write_file(file_name, connections):
-    print "Creating a topology file..." 
+    print "\n\nCreating a topology file..." 
     with open(file_name, "w") as file:
         for conn in connections:
             for node in conn:
                 if conn is not None or conn != []:
                     file.write(str(node[0])+" "+str(node[1])+" -50.0\n")
             file.write("\n")
+
+        print "\nWriting complete..."
 
     	
 
